@@ -1,0 +1,42 @@
+{
+    "name": "brunocfalcao/qrfeedz-routes",
+    "description": "QRFeedz - Routes",
+    "keywords": [
+        "brunocfalcao",
+        "qrfeedz"
+    ],
+    "homepage": "https://github.com/brunocfalcao/brunocfalcao/qrfeedz-routes",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Bruno Falcão",
+            "email": "bruno.c.falcao@brunofalcao.me",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "illuminate/contracts": "^10.0",
+        "brunocfalcao/qrfeedz-services": "dev-master",
+        "brunocfalcao/qrfeedz-frontend": "dev-master",
+        "brunocfalcao/qrfeedz-backend": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "QRFeedz\\Routes\\": "src/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "QRFeedz\\Routes\\RoutesServiceProvider"
+            ]
+        }
+    }
+}
