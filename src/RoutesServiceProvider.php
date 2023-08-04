@@ -3,11 +3,7 @@
 namespace QRFeedz\Routes;
 
 use Brunocfalcao\LaravelHelpers\Utils\DomainPatternIdentifier;
-use Brunocfalcao\Tracer\Middleware\VisitTracing;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Route;
 use QRFeedz\Foundation\Abstracts\QRFeedzServiceProvider;
 
 class RoutesServiceProvider extends QRFeedzServiceProvider
@@ -36,10 +32,8 @@ class RoutesServiceProvider extends QRFeedzServiceProvider
          *  (www.)qrfeedz.local => frontend
          *
          *  Anything else should return an HTTP permission denied (HTTP 400).
-         *
          */
-
-        if (!app()->runningInConsole()) {
+        if (! app()->runningInConsole()) {
 
             /**
              * The logic is a bit complex :)
@@ -70,9 +64,7 @@ class RoutesServiceProvider extends QRFeedzServiceProvider
              * domain "(admin.)qrfeedz-staging.com". Everything works the same,
              * but this is a staging environment to test bugs or new things
              * but it will always use PRODUCTION replicated data.
-             *
              */
-
             $parts = DomainPatternIdentifier::parseUrl(request()->fullUrl());
 
             $pass = false;
@@ -109,7 +101,7 @@ class RoutesServiceProvider extends QRFeedzServiceProvider
                     $parts['domain'] != 'localhost' :
                     $parts['domain'] == 'localhost');
 
-            if (!$pass) {
+            if (! $pass) {
                 throw new HttpResponseException(
                     response('The requested URL is invalid or unauthorized.', 400)
                 );
