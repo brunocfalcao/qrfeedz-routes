@@ -18,9 +18,9 @@
     "require": {
         "php": "^8.1",
         "illuminate/contracts": "^10.0",
-        "brunocfalcao/qrfeedz-services": "dev-master",
-        "brunocfalcao/qrfeedz-frontend": "dev-master",
-        "brunocfalcao/qrfeedz-backend": "dev-master"
+        "brunocfalcao/laravel-helpers": "dev-master",
+        "brunocfalcao/qrfeedz-backend": "dev-master",
+        "brunocfalcao/qrfeedz-frontend": "dev-master"
     },
     "autoload": {
         "psr-4": {
