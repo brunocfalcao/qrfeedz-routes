@@ -1,13 +1,13 @@
 <?php
 
-namespace QRFeedz\Backend;
+namespace QRFeedz\Routes;
 
 use Brunocfalcao\Tracer\Middleware\VisitTracing;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
 use QRFeedz\Foundation\Abstracts\QRFeedzServiceProvider;
 
-class BackendServiceProvider extends QRFeedzServiceProvider
+class RoutesServiceProvider extends QRFeedzServiceProvider
 {
     public function boot()
     {
