@@ -79,6 +79,7 @@ class RoutesServiceProvider extends QRFeedzServiceProvider
              * No need to create an utility method since this logic is just
              * tested here.
              */
+
             $pass = in_array(
                 $parts['top_level_domain'],
                 [null, 'ai', 'ch', 'com', 'local']
@@ -96,10 +97,7 @@ class RoutesServiceProvider extends QRFeedzServiceProvider
                 in_array(
                     $parts['port'],
                     ['80', '8000']
-                ) &&
-                ($parts['http_scheme'] == 'https' ?
-                    $parts['domain'] != 'localhost' :
-                    $parts['domain'] == 'localhost');
+                );
 
             if (! $pass) {
                 throw new HttpResponseException(
