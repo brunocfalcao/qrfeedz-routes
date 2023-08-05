@@ -79,7 +79,6 @@ class RoutesServiceProvider extends QRFeedzServiceProvider
              * No need to create an utility method since this logic is just
              * tested here.
              */
-
             $pass = in_array(
                 $parts['top_level_domain'],
                 [null, 'ai', 'ch', 'com', 'local']
