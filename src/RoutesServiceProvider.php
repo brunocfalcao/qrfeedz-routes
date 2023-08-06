@@ -4,6 +4,7 @@ namespace QRFeedz\Routes;
 
 use Brunocfalcao\LaravelHelpers\Utils\DomainPatternIdentifier;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Route;
 use QRFeedz\Foundation\Abstracts\QRFeedzServiceProvider;
 
 class RoutesServiceProvider extends QRFeedzServiceProvider
@@ -115,24 +116,53 @@ class RoutesServiceProvider extends QRFeedzServiceProvider
              * This is just LOADING routes files. The middleware logic should
              * be inside the routes file itself.
              */
-            $this->loadRoutesFrom(__DIR__.'/../routes/common.php');
+            $this->loadWebRouteFile(__DIR__.'/../routes/common.php');
 
-            if ($parts['subdomain'] == 'admin') {
-                $this->loadRoutesFrom(__DIR__.'/../routes/backend.php');
+            if ($parts['subdomain'] == 'admin' ||
+                config('qrfeedz.system.always_route.backend') == true) {
+                $this->loadWebRouteFile(__DIR__.'/../routes/backend.php');
             }
 
-            if ($parts['subdomain'] == null) {
-                $this->loadRoutesFrom(__DIR__.'/../routes/frontend.php');
+            if ($parts['subdomain'] == null ||
+                config('qrfeedz.system.always_route.frontend') == true) {
+                $this->loadWebRouteFile(__DIR__.'/../routes/frontend.php');
             }
 
-            if (app()->environment() != 'production') {
-                $this->loadRoutesFrom(__DIR__.'/../routes/testing.php');
+            if (app()->environment() != 'production' ||
+                config('qrfeedz.system.always_route.testing') == true) {
+                $this->loadWebRouteFile(__DIR__.'/../routes/testing.php');
             }
         } else {
             // We just load the common, console and testing routes.
-            $this->loadRoutesFrom(__DIR__.'/../routes/common.php');
-            $this->loadRoutesFrom(__DIR__.'/../routes/console.php');
-            $this->loadRoutesFrom(__DIR__.'/../routes/testing.php');
+            $this->loadCommandRouteFile(__DIR__.'/../routes/common.php');
+            $this->loadCommandRouteFile(__DIR__.'/../routes/console.php');
+            $this->loadCommandRouteFile(__DIR__.'/../routes/testing.php');
+
+            // And also the overrides.
+            if (config('qrfeedz.system.always_route.backend') == true) {
+                $this->loadWebRouteFile(__DIR__.'/../routes/backend.php');
+            }
+
+            if (config('qrfeedz.system.always_route.frontend') == true) {
+                $this->loadWebRouteFile(__DIR__.'/../routes/frontend.php');
+            }
+
+            if (config('qrfeedz.system.always_route.testing') == true) {
+                $this->loadWebRouteFile(__DIR__.'/../routes/testing.php');
+            }
         }
+    }
+
+    private function loadWebRouteFile(string $path)
+    {
+        Route::middleware(['web'])
+             ->group(function () use ($path) {
+                 include $path;
+             });
+    }
+
+    private function loadCommandRouteFile(string $path)
+    {
+        $this->loadRoutesFrom($path);
     }
 }
