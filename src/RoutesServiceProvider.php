@@ -138,17 +138,19 @@ class RoutesServiceProvider extends QRFeedzServiceProvider
             $this->loadCommandRouteFile(__DIR__.'/../routes/console.php');
             $this->loadCommandRouteFile(__DIR__.'/../routes/testing.php');
 
-            // And also the overrides.
-            if (config('qrfeedz.system.always_route.backend') == true) {
-                $this->loadWebRouteFile(__DIR__.'/../routes/backend.php');
-            }
+            // And also the overrides, on non-production environments.
+            if (app()->environment() != 'production') {
+                if (config('qrfeedz.system.always_route.backend') == true) {
+                    $this->loadWebRouteFile(__DIR__.'/../routes/backend.php');
+                }
 
-            if (config('qrfeedz.system.always_route.frontend') == true) {
-                $this->loadWebRouteFile(__DIR__.'/../routes/frontend.php');
-            }
+                if (config('qrfeedz.system.always_route.frontend') == true) {
+                    $this->loadWebRouteFile(__DIR__.'/../routes/frontend.php');
+                }
 
-            if (config('qrfeedz.system.always_route.testing') == true) {
-                $this->loadWebRouteFile(__DIR__.'/../routes/testing.php');
+                if (config('qrfeedz.system.always_route.testing') == true) {
+                    $this->loadWebRouteFile(__DIR__.'/../routes/testing.php');
+                }
             }
         }
     }
