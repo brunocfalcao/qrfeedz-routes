@@ -1,19 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use QRFeedz\Cube\Models\User;
-use QRFeedz\Services\Mail\Users\ResetUserPasswordMail;
+use QRFeedz\Services\Mail\Utils\TestTemplate;
 
 Route::get('/tests/{view}', function ($view) {
     return view("qrfeedz-backend::tests/{$view}");
 });
 
-Route::get('/mailable', function () {
-    $user = User::find(1);
-    $resetLink = $user->getPasswordResetLink(true);
-
-    return new ResetUserPasswordMail($user, [
-        'invalidate' => true,
-        'resetLink' => $resetLink,
-    ]);
+Route::get('/mailable/{template}', function (string $template) {
+    return new TestTemplate($template);
 });
