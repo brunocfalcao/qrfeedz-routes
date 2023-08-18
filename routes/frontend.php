@@ -8,11 +8,11 @@ Route::get('/', function () {
 });
 
 Route::get(
-    'qrcode/{uuid}', // This is the questionnaire uuid.
+    'qrcode/go/{uuid}', // This is qr code validation to a questionnaire.
     [QRCodeController::class, 'go']
 )->name('qrcode.go');
 
 Route::get(
-    'qrcode/pages/{uuid}', // This is the page instance uuid.
-    [QRCodeController::class, 'renderPageInstance']
-)->name('qrcode.render-page-instance');
+    'qrcode/render', // This is the questionnaire rendering framework.
+    [QRCodeController::class, 'render']
+)->name('qrcode.render');
