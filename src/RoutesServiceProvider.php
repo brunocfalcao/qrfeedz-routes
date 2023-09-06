@@ -24,12 +24,14 @@ class RoutesServiceProvider extends QRFeedzServiceProvider
         /**
          * Load additional specific routes, given the url context:
          *
-         *  admin.qrfeedz.(ch/com/ai) => backend
+         *  admin.qrfeedz.(ch/com/ai) => admin (nova) (fallback)
+         *  backend.qrfeedz.(ch/com/ai) => backend
          *  (www.)qrfeedz.(ch/com/ai) => frontend
          *
          *  if it's a local environment, then we will have:
          *
-         *  admin.qrfeedz.local => backend
+         *  admin.qrfeedz.local => admin (nova) (fallback)
+         *  backend.qrfeedz.(ch/com/ai) => backend
          *  (www.)qrfeedz.local => frontend
          *
          *  Anything else should return an HTTP permission denied (HTTP 400).
@@ -92,11 +94,11 @@ class RoutesServiceProvider extends QRFeedzServiceProvider
                 &&
                 in_array(
                     $parts['subdomain'],
-                    [null, 'admin']
+                    [null, 'admin', 'backend']
                 ) &&
                 in_array(
                     $parts['port'],
-                    ['80', '8000']
+                    [null, '80', '8000']
                 );
 
             if (! $pass) {
@@ -108,17 +110,20 @@ class RoutesServiceProvider extends QRFeedzServiceProvider
             /**
              * Next step is to understand what routes should we load. On this
              * case, we should load the backend routes if the subdomain is
-             * "admin". If not, we load the frontend routes.
+             * "backen". If not, we load the frontend routes.
+             * The "admin" routes are ignored. That's Laravel Nova routes.
+             *
              * The common routes are always loaded.
+             *
              * If we are in a non-production environment, we also load the
              * testing routes.
              *
-             * This is just LOADING routes files. The middleware logic should
+             * This is only LOADING routes files. The middleware logic should
              * be inside the routes file itself.
              */
             $this->loadWebRouteFile(__DIR__.'/../routes/common.php');
 
-            if ($parts['subdomain'] == 'admin' ||
+            if ($parts['subdomain'] == 'backend' ||
                 config('qrfeedz.system.always_route.backend') == true) {
                 $this->loadWebRouteFile(__DIR__.'/../routes/backend.php');
             }
